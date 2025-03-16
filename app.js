@@ -1,5 +1,6 @@
 const apikey = "da0d80ca1d82e026bcad96ca";
 
+// This function fetches the supported currency codes from the API
 async function fetchCurrencies() {
   try{
     const response = await fetch (`https://v6.exchangerate-api.com/v6/${apikey}/codes`);
@@ -11,7 +12,8 @@ async function fetchCurrencies() {
   
 }
 
-//function to populate the currency 
+
+// This function populates the "fromCurrency" and "toCurrency" dropdowns with available currency options
 function populateCurrencyOptions(codes){
   const fromCurrency = document.getElementById("fromCurrency");
   const toCurrency = document.getElementById("toCurrency");
@@ -27,21 +29,24 @@ function populateCurrencyOptions(codes){
   });
 }
 
-//fetch and populate currency options
-fetchCurrencies();
 
+// Call the fetchCurrencies function to populate the currency options when the page loads
+fetchCurrencies();
+// Event listener for the "convert" button to trigger the conversion when clicked
 document.getElementById("convertBtn").addEventListener("click", convertCurrency);
 
+// This function handles the currency conversion based on user input
 async function convertCurrency() {
   const amount = document.getElementById("amount").value;
   const fromCurrency = document.getElementById("fromCurrency").value;
   const toCurrency = document.getElementById("toCurrency").value;
   
+  // Validate user input to ensure it's a valid amount
   if (amount === "" || isNaN(amount)) {
     alert("please enter a valid amount.");
     return;
   }
-
+  // Construct the URL for the API request to fetch the conversion rate
   const url = `https://v6.exchangerate-api.com/v6/${apikey}/pair/${fromCurrency}/${toCurrency}/${amount}`
 
   try{
@@ -52,7 +57,7 @@ async function convertCurrency() {
     console.error("error fetching conversion rate", error);
   }
 }
-
+// This function displays the converted amount
 function displayResult(result) {
   const resultDiv = document.getElementById("result");
   resultDiv.textContent = `Converted amount: ${result}`;
